@@ -271,6 +271,7 @@ export default function VideoComponent() {
       </Box>
 
       <CustomPopover
+        container={containerRef.current}
         open={volumePopover.open}
         onClose={volumePopover.onClose}
         arrow="bottom-center"
@@ -323,6 +324,7 @@ export default function VideoComponent() {
         </Box>
       </CustomPopover>
       <CustomPopover
+        container={containerRef.current}
         open={popover.open}
         onClose={popover.onClose}
         arrow="bottom-center"
