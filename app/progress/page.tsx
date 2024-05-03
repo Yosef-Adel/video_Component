@@ -108,27 +108,48 @@ export default function VideoComponent() {
   // --------------------
   //
   const [isControlVisible, setControlVisible] = useState(true);
-  const controlVisibilityTimeout = useRef(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseMove = () => {
-    // clearTimeout(controlVisibilityTimeout.current);
-    // setControlVisible(true);
-    // controlVisibilityTimeout.current = setTimeout(() => {
-    //   setControlVisible(false);
-    //   handleClose();
-    // }, 3000); // Hide controls after 3 seconds
+    setControlVisible(true);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setControlVisible(false);
+    }, 2000); // Hide controls after 2 seconds of inactivity
   };
 
   useEffect(() => {
-    return () => clearTimeout(controlVisibilityTimeout.current); // Clear timeout on unmount
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("mousemove", handleMouseMove);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener("mousemove", handleMouseMove);
+      }
+    };
   }, []);
 
   const popover = usePopover();
   const volumePopover = usePopover();
   return (
-    <Container ref={containerRef}>
-      <Box onMouseMove={handleMouseMove}>
-        <figure>
+    <Container>
+      <Box ref={containerRef} onMouseMove={handleMouseMove}>
+        <Box
+          sx={{
+            boxShadow: `
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12)
+          `,
+            position: "relative",
+          }}
+        >
           <video
             ref={videoRef}
             src={videoUrl}
@@ -184,7 +205,7 @@ export default function VideoComponent() {
               )}
             </CustomIconButton>
           </Box>
-        </figure>
+        </Box>
       </Box>
 
       <CustomPopover
