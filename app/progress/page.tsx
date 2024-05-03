@@ -12,7 +12,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import CustomPopover, { usePopover } from "@/components/custom-popover";
 import MenuItem from "@mui/material/MenuItem";
-import { Container, Typography } from "@mui/material";
+import { CardMedia, Container, Typography } from "@mui/material";
 import CustomIconButton from "./CustomIconButton";
 import ProgressSlider from "./ProgressSlider";
 import VolumeSlider from "./VolumeSlider";
@@ -117,7 +117,9 @@ export default function VideoComponent() {
     }
     timerRef.current = setTimeout(() => {
       setControlVisible(false);
-    }, 2000); // Hide controls after 2 seconds of inactivity
+      volumePopover.onClose();
+      popover.onClose();
+    }, 2000);
   };
 
   useEffect(() => {
@@ -150,14 +152,19 @@ export default function VideoComponent() {
             position: "relative",
           }}
         >
-          <video
+          <CardMedia
+            component="video"
             ref={videoRef}
             src={videoUrl}
             onClick={togglePlayVideo}
             onTimeUpdate={updateProgress}
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
-          ></video>
+            sx={{
+              display: "block",
+              width: "100%",
+            }}
+          />
 
           <Box
             sx={{
@@ -218,6 +225,7 @@ export default function VideoComponent() {
           backdropFilter: "blur(100px)",
           backgroundColor: "rgba(0, 0, 0, 0.2)",
         }}
+        onMouseMove={handleMouseMove}
       >
         <Box
           sx={{
@@ -227,7 +235,6 @@ export default function VideoComponent() {
             padding: "10px",
             transition: "all 0.25s ease-out",
           }}
-          onMouseMove={handleMouseMove}
         >
           <VolumeSlider value={volume} onChange={setVolume} />
         </Box>
@@ -243,6 +250,7 @@ export default function VideoComponent() {
           backdropFilter: "blur(100px)",
           backgroundColor: "rgba(0, 0, 0, 0.2)",
         }}
+        onMouseMove={handleMouseMove}
       >
         <MenuItem
           onClick={() => {
