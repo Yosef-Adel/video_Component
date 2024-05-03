@@ -1,0 +1,61 @@
+.range {
+  --range: calc(var(--max) - var(--min));
+  --ratio: calc((var(--val) - var(--min)) / var(--range));
+  --sx: calc(0.5 * 1.5em + var(--ratio) * (100% - 1.5em));
+  margin: 0;
+  padding: 0;
+  width: 12.5em;
+  height: 1.5em;
+  background: transparent;
+  font:
+    1em/1 arial,
+    sans-serif;
+  -webkit-appearance: none;
+}
+
+.range::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  border: none;
+  width: 12.5em;
+  height: 0.25em;
+  background: #ccc;
+}
+
+.js .range::-webkit-slider-runnable-track {
+  background: linear-gradient(#95a, #95a) 0 / var(--sx) 100% no-repeat #ccc;
+}
+
+.range::-moz-range-track,
+.range::-ms-track {
+  box-sizing: border-box;
+  border: none;
+  width: 12.5em;
+  height: 0.25em;
+  background: #ccc;
+}
+
+.range::-moz-range-progress,
+.range::-ms-fill-lower {
+  height: 0.25em;
+  background: #95a;
+}
+
+.range::-webkit-slider-thumb,
+.range::-moz-range-thumb,
+.range::-ms-thumb {
+  margin-top: -0.625em;
+  box-sizing: border-box;
+  border: none;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background: #f90;
+}
+
+.range::-ms-thumb {
+  margin-top: 0;
+}
+
+.range::-ms-tooltip {
+  display: none;
+}

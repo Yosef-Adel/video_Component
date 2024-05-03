@@ -1,0 +1,116 @@
+body {
+  background-image: radial-gradient(circle at top right, #17141d, white);
+  display: grid;
+  height: 100vh;
+  place-items: center;
+}
+
+figure {
+  box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+video {
+  display: block;
+  width: 100%;
+}
+
+figcaption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: calc(100% - 50px);
+  align-items: center;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 50px auto min(115px) 50px 50px 50px;
+  padding: 5px;
+  backdrop-filter: blur(100px); /* Adjust the blur radius as needed */
+  background-color: rgba(0, 0, 0, 0.2); /* Transparent white background */
+  transition: all 0.3s ease-out;
+}
+
+button {
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  color: white;
+  padding: 0.5rem;
+  transition: opacity 0.25s ease-out;
+  backdrop-filter: blur(100px); /* Adjust the blur radius as needed */
+  background-color: rgba(255, 255, 255, 0.4); /* Transparent white background */
+}
+button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+label {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+progress {
+  cursor: pointer;
+}
+
+/* Fallback stuff */
+progress[value] {
+  appearance: none;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+  color: dodgerblue;
+  display: inline;
+  height: 7px;
+  position: relative;
+  width: 100%;
+}
+
+/* WebKit styles */
+progress[value]::-webkit-progress-bar {
+  border-radius: 3px;
+  backdrop-filter: blur(100px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+progress[value]::-webkit-progress-value {
+  background: linear-gradient(
+    93.31deg,
+    #8b5ea9 0%,
+    #6e3694 54.5%,
+    #582b76 100%
+  );
+  border-radius: 3px;
+  position: relative;
+  /* transition: width 0.3s linear; */
+}
+
+/* Firefox styles */
+progress[value]::-moz-progress-bar {
+  background: linear-gradient(
+    93.31deg,
+    #8b5ea9 0%,
+    #6e3694 54.5%,
+    #582b76 100%
+  );
+  border-radius: 3px;
+  position: relative;
+  /* transition: width 0.3s linear; */
+}
+.slider {
+  color: #582b76;
+  transition: all 0.3s ease;
+}
+
+.slider:hover {
+  color: #6e3694;
+}
