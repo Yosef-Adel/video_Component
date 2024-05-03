@@ -14,6 +14,7 @@ import CustomPopover, { usePopover } from "@/components/custom-popover";
 import MenuItem from "@mui/material/MenuItem";
 import { Container } from "@mui/material";
 import CustomIconButton from "./CustomIconButton";
+import ProgressSlider from "./ProgressSlider";
 
 const formatTime = (timeInSeconds: number) => {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -145,45 +146,20 @@ export default function VideoComponent() {
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
             </CustomIconButton>
 
-            <Slider
-              id="progress"
-              className="progress"
+            <ProgressSlider
               max={videoDuration}
               value={progress}
-              onChange={(_, value) => onChangeProgress(value as number)}
-              size="medium"
-              sx={{
-                color: "#582b76",
-                height: 6,
-                "& .MuiSlider-thumb": {
-                  width: 8,
-                  height: 16,
-                  borderRadius: "10px",
-                  background: "white",
-                  transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-                  "&::before": {
-                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-                  },
-                  "&:hover, &.Mui-focusVisible": {
-                    boxShadow: "0px 0px 0px 8px rgb(255 255 255 / 16%)",
-                  },
-                  "&.Mui-active": {
-                    width: 10,
-                    height: 20,
-                  },
-                },
-                "& .MuiSlider-rail": {
-                  opacity: 0.28,
-                },
-              }}
+              onChange={onChangeProgress}
             />
 
             <label id="timer">
               {formatTime(currentTime)} / {formatTime(videoDuration)}
             </label>
+
             <CustomIconButton onClick={volumePopover.onOpen}>
               {volume === 0 ? <VolumeDownRounded /> : <VolumeUpRounded />}
             </CustomIconButton>
+
             <CustomIconButton onClick={popover.onOpen}>
               <SettingsIcon />
             </CustomIconButton>
