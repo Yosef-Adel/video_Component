@@ -4,8 +4,3 @@ body {
   height: 100vh;
   place-items: center;
 }
-
-video {
-  display: block;
-  width: 100%;
-}

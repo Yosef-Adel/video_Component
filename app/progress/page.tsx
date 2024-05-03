@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import "./progress.css";
-import Slider from "@mui/material/Slider";
+
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -29,6 +29,7 @@ export default function VideoComponent() {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -37,8 +38,12 @@ export default function VideoComponent() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullScreen, setIsFullScreeen] = useState(false);
+  const [isControlVisible, setControlVisible] = useState(true);
 
   const [played, setPlayed] = useState<{ start: number; end: number }[]>([]);
+
+  const settingsPopover = usePopover();
+  const volumePopover = usePopover();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -105,11 +110,6 @@ export default function VideoComponent() {
     }
   };
 
-  // --------------------
-  //
-  const [isControlVisible, setControlVisible] = useState(true);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
   const handleMouseMove = () => {
     setControlVisible(true);
     if (timerRef.current) {
@@ -118,7 +118,7 @@ export default function VideoComponent() {
     timerRef.current = setTimeout(() => {
       setControlVisible(false);
       volumePopover.onClose();
-      popover.onClose();
+      settingsPopover.onClose();
     }, 2000);
   };
 
@@ -132,10 +132,8 @@ export default function VideoComponent() {
         container.removeEventListener("mousemove", handleMouseMove);
       }
     };
-  }, []);
+  });
 
-  const popover = usePopover();
-  const volumePopover = usePopover();
   return (
     <Container>
       <Box ref={containerRef} onMouseMove={handleMouseMove}>
@@ -168,7 +166,6 @@ export default function VideoComponent() {
 
           <Box
             sx={{
-              display: isControlVisible ? "grid" : "none",
               position: "absolute",
               bottom: 20,
               left: 20,
@@ -180,6 +177,12 @@ export default function VideoComponent() {
               bgcolor: "rgba(0, 0, 0, 0.2)",
               backdropFilter: "blur(10px)",
               transition: "all 0.3s ease-out",
+              opacity: isControlVisible ? 1 : 0,
+              transform: isControlVisible
+                ? "translateY(0)"
+                : "translateY(20px)",
+              display: "grid",
+              pointerEvents: isControlVisible ? "auto" : "none",
             }}
           >
             <CustomIconButton onClick={togglePlayVideo}>
@@ -200,7 +203,7 @@ export default function VideoComponent() {
               {volume === 0 ? <VolumeDownRounded /> : <VolumeUpRounded />}
             </CustomIconButton>
 
-            <CustomIconButton onClick={popover.onOpen}>
+            <CustomIconButton onClick={settingsPopover.onOpen}>
               <SettingsIcon />
             </CustomIconButton>
 
@@ -241,8 +244,8 @@ export default function VideoComponent() {
       </CustomPopover>
       <CustomPopover
         container={containerRef.current}
-        open={popover.open}
-        onClose={popover.onClose}
+        open={settingsPopover.open}
+        onClose={settingsPopover.onClose}
         arrow="bottom-center"
         hiddenArrow
         sx={{
