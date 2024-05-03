@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Container } from "@mui/material";
 import CustomIconButton from "./CustomIconButton";
 import ProgressSlider from "./ProgressSlider";
+import VolumeSlider from "./VolumeSlider";
 
 const formatTime = (timeInSeconds: number) => {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -196,36 +197,7 @@ export default function VideoComponent() {
           }}
           onMouseMove={handleMouseMove}
         >
-          <Slider
-            size="medium"
-            sx={{
-              color: "#582b76",
-              "& .MuiSlider-thumb": {
-                width: 15,
-                height: 15,
-                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-                "&::before": {
-                  boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-                },
-                "&:hover, &.Mui-focusVisible": {
-                  boxShadow: "0px 0px 0px 8px rgb(255 255 255 / 16%)",
-                },
-                "&.Mui-active": {
-                  width: 20,
-                  height: 20,
-                },
-              },
-              "& .MuiSlider-rail": {
-                opacity: 0.28,
-              },
-            }}
-            className="slider"
-            orientation="vertical"
-            defaultValue={30}
-            value={volume}
-            aria-label="volume"
-            onChange={(_, value) => setVolume(value as number)}
-          />
+          <VolumeSlider value={volume} onChange={setVolume} />
         </Box>
       </CustomPopover>
       <CustomPopover
