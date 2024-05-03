@@ -12,7 +12,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import CustomPopover, { usePopover } from "@/components/custom-popover";
 import MenuItem from "@mui/material/MenuItem";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import CustomIconButton from "./CustomIconButton";
 import ProgressSlider from "./ProgressSlider";
 import VolumeSlider from "./VolumeSlider";
@@ -138,9 +138,20 @@ export default function VideoComponent() {
             onPause={() => setIsPlaying(false)}
           ></video>
 
-          <figcaption
-            style={{
+          <Box
+            sx={{
               display: isControlVisible ? "grid" : "none",
+              position: "absolute",
+              bottom: 20,
+              left: 20,
+              width: "calc(100% - 50px)",
+              alignItems: "center",
+              borderRadius: "10px",
+              gridTemplateColumns: "50px auto min(115px) 50px 50px 50px",
+              padding: "10px",
+              bgcolor: "rgba(0, 0, 0, 0.2)",
+              backdropFilter: "blur(10px)",
+              transition: "all 0.3s ease-out",
             }}
           >
             <CustomIconButton onClick={togglePlayVideo}>
@@ -153,9 +164,9 @@ export default function VideoComponent() {
               onChange={onChangeProgress}
             />
 
-            <label id="timer">
+            <Typography align="center" color="white" fontSize={14}>
               {formatTime(currentTime)} / {formatTime(videoDuration)}
-            </label>
+            </Typography>
 
             <CustomIconButton onClick={volumePopover.onOpen}>
               {volume === 0 ? <VolumeDownRounded /> : <VolumeUpRounded />}
@@ -172,7 +183,7 @@ export default function VideoComponent() {
                 <FullscreenIcon onClick={enterFullScreen} />
               )}
             </CustomIconButton>
-          </figcaption>
+          </Box>
         </figure>
       </Box>
 

@@ -20,24 +20,3 @@ video {
   display: block;
   width: 100%;
 }
-
-figcaption {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: calc(100% - 50px);
-  align-items: center;
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 50px auto min(115px) 50px 50px 50px;
-  padding: 5px;
-  backdrop-filter: blur(100px); /* Adjust the blur radius as needed */
-  background-color: rgba(0, 0, 0, 0.2); /* Transparent white background */
-  transition: all 0.3s ease-out;
-}
-
-label {
-  text-align: center;
-  color: white;
-  font-size: 14px;
-}
