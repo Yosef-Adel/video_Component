@@ -69,24 +69,15 @@ export default function VideoComponent() {
     if (video) {
       const currentTime = video.currentTime;
       setCurrentTime(currentTime);
-      const duration = video.duration;
-      const progress = (currentTime / duration) * 100 || 0;
-      setProgress(progress);
+      setProgress(currentTime);
     }
   };
-
-  function preventHorizontalKeyboardNavigation(event: React.KeyboardEvent) {
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      event.preventDefault();
-    }
-  }
 
   const onChangeProgress = (newProgress) => {
     const video = videoRef.current;
     if (video) {
       setProgress(newProgress);
-      const duration = video.duration;
-      video.currentTime = (newProgress / 100) * duration || 0;
+      video.currentTime = newProgress;
     }
   };
 
@@ -182,7 +173,7 @@ export default function VideoComponent() {
             <Slider
               id="progress"
               className="progress"
-              max={100}
+              max={videoDuration}
               value={progress}
               onChange={(_, value) => onChangeProgress(value as number)}
               size="medium"
