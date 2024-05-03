@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import "./progress.css";
 import Slider from "@mui/material/Slider";
-import IconButton from "@mui/material/Button";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -14,6 +13,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import CustomPopover, { usePopover } from "@/components/custom-popover";
 import MenuItem from "@mui/material/MenuItem";
 import { Container } from "@mui/material";
+import CustomIconButton from "./CustomIconButton";
 
 const formatTime = (timeInSeconds: number) => {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -27,7 +27,6 @@ export default function VideoComponent() {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -36,7 +35,6 @@ export default function VideoComponent() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullScreen, setIsFullScreeen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
   const [played, setPlayed] = useState<{ start: number; end: number }[]>([]);
 
@@ -73,7 +71,7 @@ export default function VideoComponent() {
     }
   };
 
-  const onChangeProgress = (newProgress) => {
+  const onChangeProgress = (newProgress: number) => {
     const video = videoRef.current;
     if (video) {
       setProgress(newProgress);
@@ -143,32 +141,9 @@ export default function VideoComponent() {
               display: isControlVisible ? "grid" : "none",
             }}
           >
-            <IconButton
-              onClick={togglePlayVideo}
-              aria-label={isPlaying ? "Pause" : "Play"}
-              sx={{
-                border: "none",
-                minWidth: "30px !important",
-                minHeight: "30px",
-                borderRadius: "5px",
-                color: "white",
-                padding: "0.5rem",
-                transition: "opacity 0.25s ease-out",
-                backdropFilter: "blur(100px)",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-              }}
-            >
-              {isPlaying ? (
-                <PauseIcon
-                  sx={{
-                    width: "24px",
-                    height: "24px",
-                  }}
-                />
-              ) : (
-                <PlayArrowIcon />
-              )}
-            </IconButton>
+            <CustomIconButton onClick={togglePlayVideo}>
+              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+            </CustomIconButton>
 
             <Slider
               id="progress"
@@ -206,57 +181,20 @@ export default function VideoComponent() {
             <label id="timer">
               {formatTime(currentTime)} / {formatTime(videoDuration)}
             </label>
-            <IconButton
-              onClick={volumePopover.onOpen}
-              sx={{
-                border: "none",
-                minWidth: "30px !important",
-                minHeight: "30px",
-                borderRadius: "5px",
-                color: "white",
-                padding: "0.5rem",
-                transition: "opacity 0.25s ease-out",
-                backdropFilter: "blur(100px)",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-              }}
-            >
+            <CustomIconButton onClick={volumePopover.onOpen}>
               {volume === 0 ? <VolumeDownRounded /> : <VolumeUpRounded />}
-            </IconButton>
-            <IconButton
-              sx={{
-                border: "none",
-                minWidth: "30px !important",
-                minHeight: "30px",
-                borderRadius: "5px",
-                color: "white",
-                padding: "0.5rem",
-                transition: "opacity 0.25s ease-out",
-                backdropFilter: "blur(100px)",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-              }}
-              onClick={popover.onOpen}
-            >
+            </CustomIconButton>
+            <CustomIconButton onClick={popover.onOpen}>
               <SettingsIcon />
-            </IconButton>
-            <IconButton
-              sx={{
-                border: "none",
-                minWidth: "30px !important",
-                minHeight: "30px",
-                borderRadius: "5px",
-                color: "white",
-                padding: "0.5rem",
-                transition: "opacity 0.25s ease-out",
-                backdropFilter: "blur(100px)",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-              }}
-            >
+            </CustomIconButton>
+
+            <CustomIconButton>
               {isFullScreen ? (
                 <FullscreenExitIcon onClick={exitFullScreen} />
               ) : (
                 <FullscreenIcon onClick={enterFullScreen} />
               )}
-            </IconButton>
+            </CustomIconButton>
           </figcaption>
         </figure>
       </Box>
@@ -278,7 +216,7 @@ export default function VideoComponent() {
             height: "150px",
             borderRadius: "5px",
             padding: "10px",
-            transition: "opacity 0.25s ease-out",
+            transition: "all 0.25s ease-out",
           }}
           onMouseMove={handleMouseMove}
         >

@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.11.5",
     "@iconify/react": "^4.1.1",
     "@mui/icons-material": "^5.15.16",
+    "@mui/joy": "^5.0.0-beta.36",
     "@mui/material": "^5.15.16",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "material-ui-popup-state": "^5.1.0",
