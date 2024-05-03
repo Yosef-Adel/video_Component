@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import "./progress.css";
 import Slider from "@mui/material/Slider";
 import IconButton from "@mui/material/Button";
-import Popover from "@mui/material/Popover";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -14,7 +13,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import CustomPopover, { usePopover } from "@/components/custom-popover";
 import MenuItem from "@mui/material/MenuItem";
-import Iconify from "@/components/iconify";
 import { Container } from "@mui/material";
 
 const formatTime = (timeInSeconds: number) => {
@@ -77,32 +75,20 @@ export default function VideoComponent() {
     }
   };
 
-  const handleProgressBarClick = (e: React.MouseEvent<HTMLProgressElement>) => {
-    if (!isDragging) return;
-    const progressBar = e.currentTarget;
-    const clickedTime =
-      (e.nativeEvent.offsetX / progressBar.clientWidth) * progressBar.max;
-    const video = videoRef.current;
-    if (video) {
-      setProgress(clickedTime);
-      video.currentTime = (clickedTime * video.duration) / 100;
-      setCurrentTime((clickedTime * video.duration) / 100);
-    }
-  };
-
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   function preventHorizontalKeyboardNavigation(event: React.KeyboardEvent) {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
     }
   }
+
+  const onChangeProgress = (newProgress) => {
+    const video = videoRef.current;
+    if (video) {
+      setProgress(newProgress);
+      const duration = video.duration;
+      video.currentTime = (newProgress / 100) * duration || 0;
+    }
+  };
 
   useEffect(() => {
     const video = videoRef.current;
@@ -150,7 +136,7 @@ export default function VideoComponent() {
   const volumePopover = usePopover();
   return (
     <Container ref={containerRef}>
-      <Box onMouseUp={handleMouseUp} onMouseMove={handleMouseMove}>
+      <Box onMouseMove={handleMouseMove}>
         <figure>
           <video
             ref={videoRef}
@@ -192,16 +178,40 @@ export default function VideoComponent() {
                 <PlayArrowIcon />
               )}
             </IconButton>
-            <progress
+
+            <Slider
               id="progress"
-              max="100"
+              className="progress"
+              max={100}
               value={progress}
-              onClick={handleProgressBarClick}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleProgressBarClick}
-            >
-              Progress
-            </progress>
+              onChange={(_, value) => onChangeProgress(value as number)}
+              size="medium"
+              sx={{
+                color: "#582b76",
+                height: 6,
+                "& .MuiSlider-thumb": {
+                  width: 8,
+                  height: 16,
+                  borderRadius: "10px",
+                  background: "white",
+                  transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                  "&::before": {
+                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                  },
+                  "&:hover, &.Mui-focusVisible": {
+                    boxShadow: "0px 0px 0px 8px rgb(255 255 255 / 16%)",
+                  },
+                  "&.Mui-active": {
+                    width: 10,
+                    height: 20,
+                  },
+                },
+                "& .MuiSlider-rail": {
+                  opacity: 0.28,
+                },
+              }}
+            />
+
             <label id="timer">
               {formatTime(currentTime)} / {formatTime(videoDuration)}
             </label>
@@ -274,7 +284,6 @@ export default function VideoComponent() {
           sx={{
             width: "30px ",
             height: "150px",
-            zIndex: 90000000,
             borderRadius: "5px",
             padding: "10px",
             transition: "opacity 0.25s ease-out",
@@ -282,9 +291,26 @@ export default function VideoComponent() {
           onMouseMove={handleMouseMove}
         >
           <Slider
+            size="medium"
             sx={{
-              '& input[type="range"]': {
-                WebkitAppearance: "slider-vertical",
+              color: "#582b76",
+              "& .MuiSlider-thumb": {
+                width: 15,
+                height: 15,
+                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                "&::before": {
+                  boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                },
+                "&:hover, &.Mui-focusVisible": {
+                  boxShadow: "0px 0px 0px 8px rgb(255 255 255 / 16%)",
+                },
+                "&.Mui-active": {
+                  width: 20,
+                  height: 20,
+                },
+              },
+              "& .MuiSlider-rail": {
+                opacity: 0.28,
               },
             }}
             className="slider"
@@ -292,8 +318,7 @@ export default function VideoComponent() {
             defaultValue={30}
             value={volume}
             aria-label="volume"
-            onKeyDown={preventHorizontalKeyboardNavigation}
-            onChange={(event) => setVolume(event.target.value)}
+            onChange={(_, value) => setVolume(value as number)}
           />
         </Box>
       </CustomPopover>

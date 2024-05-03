@@ -1,5 +1,5 @@
 body {
-  background-image: radial-gradient(circle at top right, #17141d, white);
+  background-image: radial-gradient(circle at top right, #8b5ea9, black);
   display: grid;
   height: 100vh;
   place-items: center;
@@ -56,61 +56,4 @@ label {
   text-align: center;
   color: white;
   font-size: 14px;
-}
-
-progress {
-  cursor: pointer;
-}
-
-/* Fallback stuff */
-progress[value] {
-  appearance: none;
-  border: none;
-  border-radius: 3px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
-  color: dodgerblue;
-  display: inline;
-  height: 7px;
-  position: relative;
-  width: 100%;
-}
-
-/* WebKit styles */
-progress[value]::-webkit-progress-bar {
-  border-radius: 3px;
-  backdrop-filter: blur(100px);
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-progress[value]::-webkit-progress-value {
-  background: linear-gradient(
-    93.31deg,
-    #8b5ea9 0%,
-    #6e3694 54.5%,
-    #582b76 100%
-  );
-  border-radius: 3px;
-  position: relative;
-  /* transition: width 0.3s linear; */
-}
-
-/* Firefox styles */
-progress[value]::-moz-progress-bar {
-  background: linear-gradient(
-    93.31deg,
-    #8b5ea9 0%,
-    #6e3694 54.5%,
-    #582b76 100%
-  );
-  border-radius: 3px;
-  position: relative;
-  /* transition: width 0.3s linear; */
-}
-.slider {
-  color: #582b76;
-  transition: all 0.3s ease;
-}
-
-.slider:hover {
-  color: #6e3694;
 }
